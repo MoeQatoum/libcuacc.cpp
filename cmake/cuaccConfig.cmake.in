@@ -1,0 +1,16 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@_Targets.cmake")
+
+check_required_components("@PROJECT_NAME@")
+
+include(CMakeFindDependencyMacro)
+find_dependency(CUDAToolkit)
+
+message(STATUS "lib@PROJECT_NAME@ found.")
+
+set(CUACC_FOUND TRUE)
+set(CUACC_FOUND TRUE)
+
+set(CUACC_INCLUDE_DIR "@CMAKE_INSTALL_FULL_INCLUDEDIR@")
+set(CUACC_LIB_DIR "@CMAKE_INSTALL_FULL_LIBDIR@")
