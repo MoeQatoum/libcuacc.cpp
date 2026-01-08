@@ -1,54 +1,57 @@
 #ifndef CUDA_DEVICE_PTR_H
 #define CUDA_DEVICE_PTR_H
 
-#include <type_traits>
+#include <cuda_runtime.h>
+
+#include "defs.hpp"
 
 template<typename T>
 class DevicePtr {
 
-    DevicePtr(T* ptr) : m_ptr(ptr) {
+    __host__ __device__ __inline__ DevicePtr(T* ptr) : m_ptr(ptr) {
     }
 
   public:
-    static DevicePtr fromRawDevPtr(T* p) {
+    __host__ static DevicePtr fromRawDevPtr(T* p) {
         return {p};
     }
 
-    template<typename T1, typename = std::enable_if<std::is_convertible<T*, T1*>::value, bool>>
-    DevicePtr(const DevicePtr<T1>& other) : m_ptr((T1*)other) {
+    // template<typename T1, typename = std::enable_if<std::is_convertible<T*, T1*>::value, bool>>
+    template<typename T1>
+    __H_D_I__ DevicePtr(const DevicePtr<T1>& other) : m_ptr((T1*)other) {
     }
 
-    T* operator->() const {
+    __D_I__ T* operator->() const {
         return m_ptr;
     }
 
-    T& operator*() const {
+    __D_I__ T& operator*() const {
         return *m_ptr;
     }
 
-    operator T*() const {
+    __H_D_I__ operator T*() const {
         return m_ptr;
     }
 
-    T& operator[](std::size_t s) {
+    __D_I__ T& operator[](std::size_t s) {
         return m_ptr[s];
     }
 
-    friend DevicePtr operator+(const DevicePtr& dev, std::size_t s) {
+    friend __D_I__ DevicePtr operator+(const DevicePtr& dev, std::size_t s) {
         return {dev.m_ptr + s};
     }
 
-    DevicePtr& operator+=(std::size_t s) {
+    __D_I__ DevicePtr& operator+=(std::size_t s) {
         m_ptr += s;
         return *this;
     }
 
-    DevicePtr& operator++() {
+    __D_I__ DevicePtr& operator++() {
         m_ptr++;
         return *this;
     }
 
-    DevicePtr operator++(int) {
+    __D_I__ DevicePtr operator++(int) {
         return DevicePtr(m_ptr + 1);
     }
 

@@ -84,7 +84,7 @@
 find_package(CUDAToolkit REQUIRED)
 
 add_subdirectory(core)
-# add_subdirectory(kernels)
+add_subdirectory(kernels)
 add_subdirectory(memory)
 
 set(LIB_CEX_LIBRARIES_BUILD_DIR

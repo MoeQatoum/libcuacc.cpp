@@ -4,10 +4,8 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#include <concepts>
-#include <string>
-
 #include "defs.hpp"
+#include <string>
 
 template<typename T>
 concept cuda_err_t = std::is_same_v<CUresult, T> || std::is_same_v<cudaError_t, T>;

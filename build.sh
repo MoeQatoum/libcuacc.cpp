@@ -25,7 +25,7 @@ BUILD_EXAMPLES=true
 
 CXX_COMPILER=clang++
 C_COMPILER=clang
-CXX_HOST_COMPILER=clang++-14
+CXX_HOST_COMPILER=g++
 C_HOST_COMPILER=clang-14
 CUDA_COMPILER=nvcc
 
@@ -173,7 +173,6 @@ cmake -S $ROOT_DIR -B $BUILD_DIR \
     -D CUACC_SHARED_LIB:BOOL=$SHARED \
     -D CUACC_INSTALL:BOOL=$CUACC_INSTALL \
     -D CUACC_TCMALLOC:BOOL=TRUE \
-
 
 if [[ $? -eq 1 ]]; then
     printf -- "-- ${R}CMake Configuration failed${W}\n" >&2

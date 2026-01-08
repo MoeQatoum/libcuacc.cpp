@@ -29,11 +29,11 @@ file(GLOB_RECURSE CUACC_KERNELS_CU_SRC
 add_library(${CUACC_KERNELS} STATIC ${CUACC_KERNELS_CXX_SRC} ${CUACC_KERNELS_CU_SRC})
 add_library(${LIB_CUACC}::${CUACC_KERNELS} ALIAS ${CUACC_KERNELS})
 
-target_link_libraries(${CUACC_KERNELS} PUBLIC
-    CUDA::cudart_static
-    CUDA::cuda_driver
+target_link_libraries(${CUACC_KERNELS} PRIVATE
     cuacc::core
     cuacc::memory
+    CUDA::cudart_static
+    CUDA::cuda_driver
 )
 
 target_include_directories(${CUACC_KERNELS} PUBLIC
@@ -42,7 +42,7 @@ target_include_directories(${CUACC_KERNELS} PUBLIC
 )
 
 target_compile_options(${CUACC_KERNELS} PRIVATE
-    $<$<CONFIG:RELEASE>: ${CUACC_REL_BUILD_FLAGS} ${CUACC_REL_WARN_FLAGS} $<$<BOOL:${CUACC_TCMALLOC}>:${CUACC_TCMALLOC_FLAGS}>>
+    $<$<CONFIG:RELEASE>:  -allow-unsupported-compiler ${CUACC_REL_BUILD_FLAGS} ${CUACC_REL_WARN_FLAGS} $<$<BOOL:${CUACC_TCMALLOC}>:${CUACC_TCMALLOC_FLAGS}>>
     $<$<CONFIG:DEBUG>: ${CUACC_DBG_BUILD_FLAGS} ${CUACC_DBG_WARN_FLAGS} $<$<BOOL:${CUACC_TCMALLOC}>:${CUACC_TCMALLOC_FLAGS}>>
     $<$<CONFIG:PERF>: $<$<COMPILE_LANGUAGE:CXX>: -O3 -pg -Wall -Wextra> $<$<COMPILE_LANGUAGE:CUDA>: -lineinfo> $<$<BOOL:${CUACC_TCMALLOC}>:${CUACC_TCMALLOC_FLAGS}>>
 )
@@ -50,11 +50,6 @@ target_compile_options(${CUACC_KERNELS} PRIVATE
 target_link_options(${CUACC_KERNELS} PUBLIC
     $<$<CONFIG:RELEASE>: -s $<$<BOOL:${CUACC_TCMALLOC}>:${CUACC_TCMALLOC_LINKER_FLAGS}>>
     $<$<CONFIG:DEBUG>: $<$<BOOL:${CUACC_TCMALLOC}>:${CUACC_TCMALLOC_LINKER_FLAGS}>>
-)
-
-target_link_options(${CUACC_KERNELS} PUBLIC
-    $<$<CONFIG:RELEASE>: -s $<$<BOOL:${CUACC_KERNELS_TCMALLOC}>:${CUACC_KERNELS_TCMALLOC_LINKER_FLAGS}>>
-    $<$<CONFIG:DEBUG>: $<$<BOOL:${CUACC_KERNELS_TCMALLOC}>:${CUACC_KERNELS_TCMALLOC_LINKER_FLAGS}>>
 )
 
 set_target_properties(${CUACC_KERNELS} PROPERTIES

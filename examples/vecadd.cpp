@@ -1,7 +1,8 @@
 #include <iostream>
 #include <numeric>
 
-#include "cuda_cxx"
+#include "GPUMem.hpp"
+#include "vecadd.hpp"
 
 #define N     1 << 28
 #define num_t double
