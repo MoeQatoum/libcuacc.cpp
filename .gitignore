@@ -1,0 +1,27 @@
+#junk
+.DS_Store
+**/.env
+config.ini
+.cache/
+*.key
+*.json
+TODO.MD
+CMakeCache.txt
+
+.vscode/
+.vs/
+.conf/
+.build/
+.out/
+.extra/
+.secrets/
+.test_cmake/
+.idea/
+.perf/
+idea/
+TODO/
+todo/
+
+#specific to this project
+doc.sh
+Dockerfile
